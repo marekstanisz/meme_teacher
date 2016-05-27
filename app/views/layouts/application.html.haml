@@ -13,28 +13,23 @@
       %meta{content: "#{@refresh_in}", "http-equiv" => "refresh"}/
     %meta{content: "width=device-width, initial-scale=1, maximum-scale=1", name: "viewport"}/
   %body
-    %nav.navbar.navbar-default.navbar-static-top{role: "navigation"}
-      .container-fluid
+    %nav.navbar.navbar-inverse.navbar-static-top{role: "navigation"}
+      .container
         = link_to image_tag('logo.png', class: 'header img-responsive', size: '460x50'), root_url, class: 'navbar-left'
-        .navbar-header
-          %button.navbar-toggle.collapsed{"data-target" => "#collapse", "data-toggle" => "collapse", type: "button"}
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-        #collapse.collapse.navbar-collapse
-          %ul.nav.navbar-nav
-            - if current_user
-              %li
-                = link_to(my_url) do
-                  = image_tag(current_user.avatar_url(20), class: 'avatar', size: '20')
-                  My images
-              %li= link_to("Logout #{current_user.email}", session_path, method: :delete)
-            - else
-              %li= link_to "Login", new_session_path
-          = form_tag({ controller: :search, action: :show }, method: 'get', class: 'navbar-form navbar-left') do
-            = text_field_tag :q, nil, placeholder: 'Search', tabindex: '1'
-          .navbar-form
-            %input#quick-add-url{"data-placement" => "bottom", "data-toggle" => "tooltip", placeholder: "Load URL", tabindex: "2", title: "Images in the clipboard can be loaded by pasting them onto any page", type: "text"}/
+        %ul.nav.navbar-nav
+          - if current_user
+            %li
+              = link_to my_url do
+                = image_tag current_user.avatar_url(20), class: 'avatar', size: '20'
+                My images
+            %li= link_to "Logout #{current_user.email}", session_path, method: :delete
+          - else
+            %li= link_to "Login", new_session_path
+        = form_tag search_path, method: 'get', class: 'navbar-form navbar-left' do
+          .form-group
+            = text_field_tag :q, nil, placeholder: 'Search', tabindex: '1', class: 'form-control'
+        .navbar-form
+          %input#quick-add-url{"data-placement" => "bottom", "data-toggle" => "tooltip", placeholder: "Load URL", tabindex: "2", title: "Images in the clipboard can be loaded by pasting them onto any page", type: "text"}/
 
     .container
       .row
