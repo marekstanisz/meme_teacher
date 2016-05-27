@@ -1,0 +1,10 @@
+.thumb-index.well
+  .row
+    - src_sets.each do |ss|
+      .col-xs-6.col-sm-3.col-md-2
+        .thumbnail
+          = render(partial: ss)
+  - if paginate
+    = paginate(src_sets)
+  - else
+    = link_to('More sets', :src_sets)

@@ -1,0 +1,24 @@
+- content_for(:title) do
+  - "Meme Captain meme generator upload"
+%h1 Upload source image
+= form_for(@src_image, url: { action: 'create' }) do |f|
+  = f.error_messages
+  .form-group
+    = f.file_field :image
+  .form-group
+    = f.label :name
+    = f.text_field :name
+  .form-group
+    = f.label :private do
+      Private?
+      \#{f.check_box :private}
+  = f.submit('Create', class: 'btn btn-default')
+%h1 Load images from the web
+%p Enter one or more image URLs separated by whitespace.
+%p
+  Join image URLs with '|' (vertical combine) and '[]' (horizontal combine) operators to combine multiple
+  images into a single source image.
+%p For example: http://foo.com/1.jpg[]http://bar.com/2.png|http://test.com/3.jpg
+#load-urls-message{"data-myurl" => ""}
+= my_url
+"

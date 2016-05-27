@@ -1,0 +1,19 @@
+.thumb-index.well
+  - if show_toolbar
+    .btn-toolbar.well-toolbar
+      .btn-group
+        %button.btn.btn-default.select-all Select All
+        %button.btn.btn-default.select-none.disabled.disable-none-selected.enable-some-selected Select None
+      .btn-group
+        %button.btn.btn-danger.delete-gend.disabled.disable-none-selected.enable-some-selected
+          Delete
+          %span.selected-count.badge.badge-inverse 0
+  .row
+    - gend_images.each do |gi|
+      .col-xs-6.col-sm-3.col-md-2
+        .thumbnail
+          = render(partial: gi, locals: { show_toolbar: show_toolbar })
+  - if current_page? root_url
+    = link_to 'More images', controller: :gend_images, page: 2
+  - else
+    = paginate gend_images

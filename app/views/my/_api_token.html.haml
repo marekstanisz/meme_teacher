@@ -1,0 +1,7 @@
+%p
+  API token:
+  %span.api-token= current_token
+  - if current_token
+    %button.btn.btn-default.api-token-button Regenerate
+  - else
+    %button.btn.btn-default.api-token-button Generate

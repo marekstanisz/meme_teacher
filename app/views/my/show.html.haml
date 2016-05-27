@@ -1,0 +1,14 @@
+- content_for(:title) do
+  Meme Captain My Images
+= render(partial: 'api_token', locals: { current_token: @api_token })
+= render(partial: 'src_images/src_images', locals: { |
+  user: current_user,                                |
+  show_remove_from_set: false,                       |
+  show_delete: true,                                 |
+  src_images: @src_images,                           |
+  more_images: false })                              |
+- unless @src_sets.empty?
+  = render(partial: 'src_sets/src_sets', locals: { src_sets: @src_sets, paginate: true })
+- unless @gend_images.empty?
+  = render(partial: 'gend_images/gend_images',                          |
+    locals: { gend_images: @gend_images, show_toolbar: @show_toolbar }) |

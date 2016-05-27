@@ -1,0 +1,35 @@
+.thumb-index.well
+  - if user
+    .btn-toolbar.well-toolbar
+      .btn-group
+        = link_to('New', {controller: :src_images, action: :new}, class: 'btn btn-success', style: 'margin-top: 0;')
+      .btn-group
+        %button.btn.btn-default.select-all Select All
+        %button.btn.btn-default.select-none.disabled.disable-none-selected.enable-some-selected Select None
+      .btn-group
+        .input-group
+          %button.btn.btn-default.add-to-set.disabled.disable-none-selected.enable-some-selected
+            Add
+            %span.selected-count.badge.badge-info 0
+            to Set:
+          %input#add-to-set-name{type: "text"}/
+      - if show_remove_from_set
+        .btn-group
+          %button.btn.btn-default.remove-from-set.disabled.disable-none-selected.enable-some-selected
+            Remove
+            %span.selected-count.badge.badge-info 0
+            from Set
+      - if show_delete
+        .btn-group
+          %button.btn.btn-danger.delete-src.disabled.disable-none-selected.enable-some-selected
+            Delete
+            %span.selected-count.badge.badge-inverse 0
+  .row
+    - src_images.each do |si|
+      .col-xs-6.col-sm-3.col-md-2
+        .thumbnail
+          = render(partial: si, locals: {user: user})
+  - if more_images
+    = link_to('More images', :src_images)
+  - else
+    = paginate(src_images)

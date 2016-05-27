@@ -1,0 +1,13 @@
+%h1 Sign Up
+= form_for @user, url: { action: 'create' } do |f|
+  = f.error_messages
+  .form-group
+    = f.label :email
+    = f.text_field :email, autofocus: true, class: 'form-control'
+  .form-group
+    = f.label :password
+    = f.password_field :password, class: 'form-control'
+  .form-group
+    = f.label :password_confirmation
+    = f.password_field :password_confirmation, class: 'form-control'
+  = f.submit('Sign Up', class: 'btn btn-primary')

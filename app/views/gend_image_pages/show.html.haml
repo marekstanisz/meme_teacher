@@ -1,0 +1,62 @@
+- content_for(:description, @gend_image.meme_text)
+- if @gend_image.work_in_progress?
+  %p
+    This image is being processed. Wait a few seconds or reload the page.
+- else
+  .row
+    .col-md-6
+      %p
+        = link_to image_tag(@gend_image_url, size: @gend_image.dimensions, class: 'img-responsive', alt: @gend_image.meme_text), @gend_image_url
+    .col-md-6
+      %blockquote
+        - @gend_image.captions.position_order.each do |c|
+          %h1= c.text
+        - if @src_image.name?
+          - content_for(:title) do
+            - "#{@src_image.name} meme"
+          %small= @src_image.name
+      - if @gend_image.private
+        %p
+          %span.label.label-warning Private
+      - unless @gend_image.private
+        = link_to("http://www.reddit.com/submit?url=#{u(@gend_image_url)}", class: 'btn btn-default') do
+          Reddit
+        - if @gend_image.is_animated
+          = link_to("http://gfycat.com/fetch/#{@gend_image_url}", class: 'btn btn-default') do
+            Gfycat
+        = link_to("https://twitter.com/intent/tweet?url=#{u(@gend_image_url)}&hashtags=memecaptain", class: 'btn btn-default') do
+          Tweet
+        = link_to("http://pinterest.com/pin/create/button/?url=#{u(gend_image_page_url(id: @gend_image.id_hash))}&media=#{u(@gend_image_url)}", class: 'btn btn-default') do
+          Pinterest
+        = link_to("http://facebook.com/sharer.php?u=#{u(@gend_image_url)}", class: 'btn btn-default') do
+          Facebook
+        = link_to("https://plus.google.com/share?url=#{u(gend_image_page_url(id: @gend_image.id_hash))}", class: 'btn btn-default') do
+          Google+
+      - if browser.platform.android?
+        = link_to("sms:?body=#{u(@gend_image_url)}", class: 'btn btn-default') do
+          SMS
+      - if browser.device.mobile?
+        = link_to("whatsapp://send?text=#{u(@gend_image_url)}", class: 'btn btn-default') do
+          WhatsApp
+      = link_to({ controller: :gend_images, action: :new, src: @src_image.id_hash }, class: 'btn btn-default') do
+        New meme using this image
+      %p.meme-meta
+        = link_to @gend_image_url, @gend_image_url
+      %p
+        Size: #{@gend_image.width}x#{@gend_image.height}
+      %p
+        Created #{local_time_ago(@gend_image.created_at)}
+      %a.btn.btn-default{"data-toggle" => "modal", href: "#qr-modal", role: "button"} QR code to phone
+      = link_to({ controller: :gend_image_scripts, action: :show, format: :txt, id: @gend_image.id_hash }, class: 'btn btn-default') do
+        API
+      - if @show_creator_ip
+        %p.meme-meta
+          Creator IP: #{@gend_image.creator_ip}
+      #qr-modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "modal-label", role: "dialog", tabindex: "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-body
+              = image_tag("https://chart.googleapis.com/chart?chs=400x400&cht=qr&chl=#{u(@gend_image_url)}", |
+                'data-dismiss' => 'modal', class: 'img-responsive qr')                                       |
+            .modal-footer
+              %button.btn.btn-default{"aria-hidden" => "true", "data-dismiss" => "modal"} Done

@@ -1,0 +1,33 @@
+.row
+  .col-md-6
+    .text-positioner{"data-img-height" => "#{@gend_image.src_image.height}", "data-img-url" => "#{@src_image_url_with_extension}", "data-img-width" => "#{@gend_image.src_image.width}"}
+.col-md-6
+  - if @gend_image.src_image.name.blank?
+    - if @gend_image.src_image.user == current_user
+      %h1= best_in_place(@gend_image.src_image, :name, url: @src_image_path, place_holder: 'Click to name this source image')
+  - else
+    %h1
+      = best_in_place_if(@gend_image.src_image.user == current_user, |
+        @gend_image.src_image, :name, url: @src_image_path)          |
+    - content_for(:title) do
+      - "#{@gend_image.src_image.name} meme generator"
+  = form_for(@gend_image, url: { action: 'create' }) do |f|
+    = f.error_messages
+    = f.hidden_field(:src_image_id, value: @gend_image.src_image.id_hash)
+    - @gend_image.captions.each.with_index do |caption, index|
+      .form-group
+        = f.fields_for :captions, caption do |cf|
+          = cf.label :text, "Caption #{index + 1}", class: 'caption-label'
+          = cf.text_area :text, autofocus: index == 0, class: 'form-control', rows: 2
+          = cf.hidden_field :font, value: ''
+          = cf.hidden_field :top_left_x_pct
+          = cf.hidden_field :top_left_y_pct
+          = cf.hidden_field :width_pct
+          = cf.hidden_field :height_pct
+    = button_tag('Add another caption', class: 'btn btn-default text-add', type: :button)
+    = f.label :private do
+      Private?
+      \#{f.check_box :private}
+    %p
+      = f.submit('Create', class: 'btn btn-primary')
+    = f.text_field :email, style: 'display: none'

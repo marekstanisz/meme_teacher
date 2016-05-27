@@ -16,3 +16,6 @@
 
 # jasmine headless webkit cache
 .jhw-cache
+
+.ruby-version
+.ruby-gemset
