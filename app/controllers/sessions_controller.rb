@@ -3,6 +3,8 @@
 
 # Sessions controller.
 class SessionsController < ApplicationController
+  skip_before_action :authenticate_user, except: :destroy
+
   def create
     user = User.auth_case_insens(params[:email], params[:password])
 

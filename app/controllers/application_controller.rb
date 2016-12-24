@@ -4,7 +4,7 @@
 # Application controller.
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :authenticate
+  before_action :authenticate_user
 
   attr_reader :current_user
 
@@ -30,6 +30,12 @@ class ApplicationController < ActionController::Base
 
   def remote_ip
     request.headers['CF-Connecting-IP'] || request.remote_ip
+  end
+
+  protected
+
+  def authenticate_user
+    return if not_logged_in 'Please log in to use the service'.freeze
   end
 
   private
